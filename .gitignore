@@ -1,0 +1,10 @@
+.DS_Store
+*.gem
+*.rbc
+/.config
+/coverage/
+/pkg/
+/spec/reports/
+/tmp/
+.rspec_status
+Gemfile.lock
