@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "deepseek"
+require "pry"
+
+# Load environment variables from .env file if present
+begin
+  require 'dotenv'
+  Dotenv.load
+rescue LoadError
+  # dotenv gem not installed, skipping
+end
+
+# Configure the client with environment variables
+Deepseek.configure do |config|
+  config.api_key = ENV['DEEPSEEK_API_KEY']
+end
+
+# Create a client instance for convenience
+@client = Deepseek::Client.new
+
+puts "Loaded Deepseek Ruby SDK (v#{Deepseek::VERSION})"
+puts "Environment: #{ENV['DEEPSEEK_ENV'] || 'development'}"
+puts "\nAvailable variables:"
+puts "  @client - Preconfigured Deepseek::Client instance"
+puts "\nExample usage:"
+puts '  response = @client.chat(messages: [{ role: "user", content: "Hello!" }])'
+puts "\n"
+
+Pry.start

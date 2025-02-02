@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+# path to your application root.
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+FileUtils.chdir APP_ROOT do
+  # This script is a way to set up or update your development environment automatically.
+  puts '== Installing dependencies =='
+  system! 'gem install bundler --conservative'
+  system('bundle check') || system!('bundle install')
+
+  puts "\n== Creating example .env file =="
+  if File.exist?('.env')
+    puts '== .env file already exists =='
+  else
+    FileUtils.cp '.env.example', '.env' if File.exist?('.env.example')
+  end
+
+  puts "\n== Removing old logs and tempfiles =="
+  system! 'bin/rake log:clear tmp:clear'
+
+  puts "\n== Setup complete =="
+end
