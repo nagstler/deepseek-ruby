@@ -12,7 +12,7 @@ module Deepseek
       options.each do |key, value|
         @config.send("#{key}=", value) if @config.respond_to?("#{key}=")
       end
-      @config.validate!
+      @config.validate! # This will raise ConfigurationError if no API key is set
     end
 
     def chat(messages:, model: 'deepseek-chat', **params)

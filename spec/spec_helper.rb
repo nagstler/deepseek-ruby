@@ -1,17 +1,22 @@
 require 'simplecov'
 require 'simplecov-cobertura'
 
+# Configure SimpleCov
 SimpleCov.start do
-  enable_coverage :branch
-  
   add_filter '/spec/'
   add_filter '/vendor/'
   
-  add_group 'Client', 'lib/deepseek/client'
-  add_group 'Configuration', 'lib/deepseek/configuration'
-  add_group 'Errors', 'lib/deepseek/errors'
+  enable_coverage :branch
+  
+  # Add groups for better organization
+  add_group 'Client', 'lib/deepseek/client.rb'
+  add_group 'Configuration', 'lib/deepseek/configuration.rb'
+  add_group 'Errors', 'lib/deepseek/errors.rb'
+  
+  track_files 'lib/**/*.rb'
 end
 
+# Set formatter for CodeClimate
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::HTMLFormatter,
   SimpleCov::Formatter::CoberturaFormatter
@@ -21,22 +26,18 @@ require 'deepseek'
 require 'webmock/rspec'
 
 RSpec.configure do |config|
-  # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = ".rspec_status"
-
-  # Disable RSpec exposing methods globally on `Module` and `main`
-  config.disable_monkey_patching!
-
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
+  config.expect_with :rspec do |expectations|
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  # Clean up after each test
-  config.after(:each) do
-    Deepseek.reset_configuration!
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
   end
 
-  # Configure WebMock
+  config.shared_context_metadata_behavior = :apply_to_host_groups
+  config.order = :random
+  config.example_status_persistence_file_path = "spec/examples.txt"
+  
   config.before(:each) do
     WebMock.disable_net_connect!
   end
