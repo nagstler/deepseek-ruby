@@ -39,7 +39,7 @@ A Ruby SDK for interacting with the Deepseek AI API. This SDK provides a simple 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'deepseek'
+gem 'deepseek-client'
 ```
 
 And then execute:
@@ -51,7 +51,7 @@ $ bundle install
 Or install it yourself as:
 
 ```bash
-$ gem install deepseek
+$ gem install deepseek-client
 ```
 
 ## Quick Start
