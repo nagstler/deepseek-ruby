@@ -1,10 +1,11 @@
 # Deepseek Ruby SDK
 
-[![Gem Version](https://badge.fury.io/rb/deepseek.svg)](https://badge.fury.io/rb/deepseek)
-[![Build Status](https://github.com/nagstler/deepseek-ruby/workflows/CI/badge.svg)](https://github.com/nagstler/deepseek-ruby/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/7698e7bb90f0defb05d3/maintainability)](https://codeclimate.com/github/nagstler/deepseek-ruby/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/7698e7bb90f0defb05d3/test_coverage)](https://codeclimate.com/github/nagstler/deepseek-ruby/test_coverage)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<a href="https://badge.fury.io/rb/deepseek"><img src="https://img.shields.io/gem/v/deepseek?style=for-the-badge" alt="Gem Version"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"></a>
+<a href="https://codeclimate.com/github/nagstler/deepseek-ruby/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/nagstler/deepseek-ruby?style=for-the-badge" alt="Maintainability"></a>
+<a href="https://codeclimate.com/github/nagstler/deepseek-ruby/test_coverage"><img src="https://img.shields.io/codeclimate/coverage/nagstler/deepseek-ruby?style=for-the-badge" alt="Test Coverage"></a>
+<a href="https://github.com/nagstler/deepseek-ruby/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nagstler/deepseek-ruby/ci.yml?branch=main&style=for-the-badge" alt="CI"></a>
+<a href="https://github.com/nagstler/deepseek-ruby/stargazers"><img src="https://img.shields.io/github/stars/nagstler/deepseek-ruby?style=for-the-badge" alt="GitHub stars"></a>
 
 A Ruby SDK for interacting with the Deepseek AI API. This SDK provides a simple and intuitive interface for making API calls, handling responses, and managing errors.
 
