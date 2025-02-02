@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday/retry'
 require 'json'
 
 module Deepseek
@@ -14,31 +15,15 @@ module Deepseek
       @config.validate!
     end
 
-    # Chat Completion endpoint
     def chat(messages:, model: 'deepseek-chat', **params)
-      post('/chat/completions', {
+      post('/v1/chat/completions', {
         model: model,
         messages: messages,
         **params
       })
-    end
-
-    # Text Completion endpoint
-    def complete(prompt:, model: 'deepseek-text', **params)
-      post('/completions', {
-        model: model,
-        prompt: prompt,
-        **params
-      })
-    end
-
-    # Model information endpoints
-    def list_models
-      get('/models')
-    end
-
-    def retrieve_model(model_id)
-      get("/models/#{model_id}")
+    rescue Faraday::Error => e
+      handle_error_response(e.response) if e.response
+      raise e
     end
 
     private
@@ -46,6 +31,7 @@ module Deepseek
     def connection
       @connection ||= Faraday.new(url: config.api_base_url) do |faraday|
         faraday.request :json
+        
         faraday.request :retry, {
           max: config.max_retries,
           interval: 0.5,
@@ -58,40 +44,43 @@ module Deepseek
             'Error::TimeoutError'
           ]
         }
+
+        # Don't automatically raise errors, we want to handle them ourselves
         faraday.response :raise_error
+
         faraday.adapter Faraday.default_adapter
         faraday.options.timeout = config.timeout
       end
     end
 
-    def handle_response(response)
-      case response.status
-      when 200..299
-        JSON.parse(response.body)
+    def handle_error_response(response)
+      status = response[:status]
+      error_info = parse_error_response(response[:body])
+
+      case status
       when 401
-        raise AuthenticationError.new("Invalid API key", code: response.status, response: response)
+        raise AuthenticationError.new(error_info[:message], code: status, response: response)
       when 429
-        raise RateLimitError.new("Rate limit exceeded", code: response.status, response: response)
+        raise RateLimitError.new(error_info[:message], code: status, response: response)
       when 400, 404
-        raise InvalidRequestError.new(error_message_from_response(response), code: response.status, response: response)
+        raise InvalidRequestError.new(error_info[:message], code: status, response: response)
       when 500..599
-        raise ServiceUnavailableError.new("Service error: #{response.status}", code: response.status, response: response)
+        raise ServiceUnavailableError.new("Service error: #{status}", code: status, response: response)
       else
-        raise APIError.new("Unknown error: #{response.status}", code: response.status, response: response)
+        raise APIError.new("Unknown error: #{status}", code: status, response: response)
       end
-    rescue JSON::ParserError
-      raise APIError.new("Invalid JSON response", response: response)
     end
 
-    def error_message_from_response(response)
-      return response.body unless response.body.is_a?(String)
+    def parse_error_response(body)
+      return { message: body } unless body.is_a?(String)
       
-      begin
-        error_data = JSON.parse(response.body)
-        error_data['error']['message'] || error_data['message'] || response.body
-      rescue JSON::ParserError
-        response.body
-      end
+      parsed = JSON.parse(body, symbolize_names: true)
+      {
+        message: parsed.dig(:error, :message) || parsed[:message] || "Unknown error",
+        code: parsed.dig(:error, :code) || parsed[:code]
+      }
+    rescue JSON::ParserError
+      { message: body }
     end
 
     def request_headers
@@ -103,20 +92,30 @@ module Deepseek
       }
     end
 
-    def get(endpoint, params = {})
-      response = connection.get(endpoint) do |req|
-        req.headers = request_headers
-        req.params = params
-      end
-      handle_response(response)
-    end
-
     def post(endpoint, body = {})
       response = connection.post(endpoint) do |req|
         req.headers = request_headers
-        req.body = body.to_json
+        req.body = body
       end
-      handle_response(response)
+
+      case response.status
+      when 200..299
+        JSON.parse(response.body)
+      else
+        handle_error_response(
+          status: response.status,
+          body: response.body,
+          headers: response.headers,
+          request: {
+            method: 'POST',
+            url: response.env.url.to_s,
+            headers: response.env.request_headers,
+            body: body
+          }
+        )
+      end
+    rescue JSON::ParserError
+      raise APIError.new("Invalid JSON response", response: response)
     end
   end
 end

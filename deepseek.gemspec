@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description   = "A comprehensive Ruby client library for interacting with Deepseek's AI APIs, " \
                       "providing a simple and intuitive interface for making API calls, handling responses, " \
                       "and managing API resources."
-  spec.homepage      = "https://github.com/yourusername/deepseek-ruby"
+  spec.homepage      = "https://github.com/nagendrakdangi/deepseek-ruby"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 
@@ -43,9 +43,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "webmock", "~> 3.0"
-  spec.add_development_dependency "vcr", "~> 6.0"
-  spec.add_development_dependency "yard", "~> 0.9"
+  spec.add_development_dependency "simplecov", "~> 0.22.0"
+  spec.add_development_dependency "simplecov-cobertura", "~> 2.1"
   spec.add_development_dependency "rubocop", "~> 1.0"
-  spec.add_development_dependency "rubocop-rspec", "~> 2.0"
+  spec.add_development_dependency "yard", "~> 0.9"
   spec.add_development_dependency "pry", "~> 0.14"
 end
