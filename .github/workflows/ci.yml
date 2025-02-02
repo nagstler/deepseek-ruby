@@ -30,20 +30,20 @@ jobs:
         bundle install --jobs 4
 
     - name: Run tests
-      run: bundle exec rake test
+      run: bundle exec rake spec
       env:
         COVERAGE: true
         DEEPSEEK_API_KEY: 'test-key'
 
-    - name: Upload coverage to CodeClimate
+    - name: Publish code coverage
       if: github.ref == 'refs/heads/main' && matrix.ruby-version == '3.2'
+      uses: paambaati/codeclimate-action@v5.0.0
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      run: |
-        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-        chmod +x ./cc-test-reporter
-        ./cc-test-reporter before-build
-        ./cc-test-reporter after-build --exit-code $?
+      with:
+        coverageCommand: bundle exec rake spec
+        coverageLocations: ${{github.workspace}}/coverage/coverage.xml:cobertura
+        debug: true
 
     - name: Upload coverage artifacts
       uses: actions/upload-artifact@v4
