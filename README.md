@@ -1,6 +1,8 @@
 # Deepseek Ruby SDK
 
-<a href="https://badge.fury.io/rb/deepseek"><img src="https://img.shields.io/gem/v/deepseek?style=for-the-badge" alt="Gem Version"></a>
+<a href="https://badge.fury.io/rb/deepseek-client">
+  <img src="https://img.shields.io/gem/v/deepseek-client?style=for-the-badge" alt="Gem Version">
+</a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License"></a>
 <a href="https://codeclimate.com/github/nagstler/deepseek-ruby/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/nagstler/deepseek-ruby?style=for-the-badge" alt="Maintainability"></a>
 <a href="https://codeclimate.com/github/nagstler/deepseek-ruby/test_coverage"><img src="https://img.shields.io/codeclimate/coverage/nagstler/deepseek-ruby?style=for-the-badge" alt="Test Coverage"></a>

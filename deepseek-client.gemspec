@@ -1,7 +1,7 @@
 require_relative 'lib/deepseek/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "deepseek"
+  spec.name          = "deepseek-client"
   spec.version       = Deepseek::VERSION
   spec.authors       = ["Nagendra Dhanakeerthi"]
   spec.email         = ["nagendra.dhanakeerthi@gmail.com"]
