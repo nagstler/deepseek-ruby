@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description   = "A comprehensive Ruby client library for interacting with Deepseek's AI APIs, " \
                       "providing a simple and intuitive interface for making API calls, handling responses, " \
                       "and managing API resources."
-  spec.homepage      = "https://github.com/nagendrakdangi/deepseek-ruby"
+  spec.homepage      = "https://github.com/nagstler/deepseek-ruby"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 
